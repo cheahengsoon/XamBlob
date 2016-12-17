@@ -4,4 +4,11 @@
 		<ToolbarItem Text="Add" Clicked="HandleAddClicked"/>
 		<ToolbarItem Text="Refresh" Clicked="HandleRefreshClicked"/>
 	</ContentPage.ToolbarItems>
+
+	<StackLayout x:Name="rootLayout">
+		<StackLayout Orientation="Horizontal" HeightRequest="100">
+			<ActivityIndicator x:Name="activity"/>
+			<Label x:Name="txtStatus" VerticalOptions="Center"/>
+		</StackLayout>
+	</StackLayout>
 </ContentPage>

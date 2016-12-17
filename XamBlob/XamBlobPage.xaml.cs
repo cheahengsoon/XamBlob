@@ -10,10 +10,17 @@ namespace XamBlob
 		public XamBlobPage()
 		{
 			InitializeComponent();
-			this.Content = new ScrollView
-			{ 
-				Content = _wrapLayout
-			};
+			rootLayout.Children.Insert(0, new ScrollView
+			{
+				Content = _wrapLayout,
+				VerticalOptions = LayoutOptions.FillAndExpand
+			});
+		}
+
+		void ShowStatus(string msg, bool active = false)
+		{
+			txtStatus.Text = msg;
+			activity.IsVisible = activity.IsRunning = active;
 		}
 
 		WrapLayout _wrapLayout = new WrapLayout();
@@ -40,7 +47,9 @@ namespace XamBlob
 
 			Console.WriteLine("File: " + file.Path);
 
+			ShowStatus("Uploading...", true);
 			await BlobMan.Instance.UploadFileAsync(file.Path);
+			ShowStatus("Upload done.");
 		}
 
 		async void HandleRefreshClicked(object sender, System.EventArgs e)
@@ -51,6 +60,9 @@ namespace XamBlob
 			}
 
 			_isRefreshing = true;
+
+			ShowStatus("Refreshing...", true);
+
 			try
 			{
 				await UpdateAllImagesAsync();
@@ -58,11 +70,13 @@ namespace XamBlob
 			finally
 			{
 				_isRefreshing = false;
+				ShowStatus("Done refreshing");
 			}
 		}
 
 		async Task UpdateAllImagesAsync()
 		{
+			_wrapLayout.Children.Clear();
 			var uris = await BlobMan.Instance.GetAllBlobUrisAsync();
 			foreach (var uri in uris)
 			{
