@@ -34,7 +34,9 @@ namespace XamBlob
 		{
 			// Not quite perfect: requires multiple queries if there are many blobs.
 			var contToken = new BlobContinuationToken();
-			var allBlobs = await _fullResContainer.ListBlobsSegmentedAsync(contToken).ConfigureAwait(false);
+			//var allBlobs = await _fullResContainer.ListBlobsSegmentedAsync(contToken).ConfigureAwait(false);
+			var allBlobs = await _lowResContainer.ListBlobsSegmentedAsync(contToken).ConfigureAwait(false);
+
 
 			var uris = allBlobs.Results.Select(b => b.Uri).ToList();
 
@@ -43,7 +45,8 @@ namespace XamBlob
 
 		public async Task UploadFileAsync(string localPath)
 		{
-			string uniqueBlobName = Guid.NewGuid().ToString() + "." + Path.GetExtension(localPath);
+			string uniqueBlobName = Guid.NewGuid().ToString();
+			uniqueBlobName += Path.GetExtension(localPath);
 			var blobRef = _fullResContainer.GetBlockBlobReference(uniqueBlobName);
 
 			// Can upload files, streams, text, ...

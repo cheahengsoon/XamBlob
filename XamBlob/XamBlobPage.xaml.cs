@@ -27,7 +27,7 @@ namespace XamBlob
 		bool _isRefreshing;
 
 		async void HandleAddClicked(object sender, System.EventArgs e)
-		{ 
+		{
 			await CrossMedia.Current.Initialize();
 
 			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
@@ -50,7 +50,7 @@ namespace XamBlob
 			ShowStatus("Uploading...", true);
 			await BlobMan.Instance.UploadFileAsync(file.Path);
 			ShowStatus("Upload done.");
-		}
+		}		
 
 		async void HandleRefreshClicked(object sender, System.EventArgs e)
 		{
